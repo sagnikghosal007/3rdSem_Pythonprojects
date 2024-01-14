@@ -1,35 +1,52 @@
 import tkinter 
 from tkinter import ttk
 from tkinter import messagebox
- 
+import random
+import pandas as pd
 
 def submit():
     firstname = first_name_entry.get()
     lastname = last_name_entry.get()
-        
+
     if firstname and lastname:
         age = age_spinbox.get()
         department = department_combobox.get()
-            
-            #Student's info
-        email_id=email_id_entry.get()
-        ph_no=ph_no_entry.get()
-        class_ten_no=class_ten_no_entry.get()
-        class_twelve_no=class_twelve_no_entry.get()
-            
-        print("First name: ", firstname, "Last name: ", lastname)
-        print("Age: ", age, "Department ", department)
-        print("Class 10 % :", class_ten_no, "Class 12 % : ", class_twelve_no)
-        print("Phone num:",ph_no,"Email Id", email_id)
-        print("------------------------------------------")
-           
-            
+
+        # Student's info
+        email_id = email_id_entry.get()
+        ph_no = ph_no_entry.get()
+        class_ten_no = class_ten_no_entry.get()
+        class_twelve_no = class_twelve_no_entry.get()
+        address = address_entry.get()  # Include address
+
+        # Generate unique registration ID
+        registration_id = random.randint(1000000000, 9999999999)
+
+        # Create a DataFrame for Excel export
+        data = {
+            "Registration ID": registration_id,
+            "First Name": firstname,
+            "Last Name": lastname,
+            "Age": age,
+            "Department": department,
+            "Email ID": email_id,
+            "Phone No.": ph_no,
+            "Class 10 (%)": class_ten_no,
+            "Class 12 (%)": class_twelve_no,
+            "Address": address  # Include address
+        }
+        df = pd.DataFrame(data, index=[0])
+
+        # Export DataFrame to Excel
+        df.to_excel("student_data.xlsx", index=False)
+
+        print("Registration ID:", registration_id)
+        print("----------------------------------------")
+        print("Data saved to Excel successfully.")
+
     else:
         tkinter.messagebox.showwarning(title="Error", message="First name and last name are required.")
-        
-    
-    
-    
+
 def clear_all():
     for widget in student_info.winfo_children():
         if(isinstance(widget,tkinter.Entry)):
@@ -119,5 +136,3 @@ button3 = tkinter.Button(student_info,
 button3.grid(row=20,column=2,padx=20, pady=10)
 
 window.mainloop()
-
-
